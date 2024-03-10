@@ -1,0 +1,40 @@
+class Solution{
+	public:
+	
+	long long power(long long a,long long b){
+	    long long c = 1;
+	    
+	    while(b){
+	        if(b %2 == 1){
+	            c = c*a;
+	        }
+	        
+	        a = a*a;
+	        b = b/2;
+	    }
+	    
+	    return c;
+	}
+	
+	
+	
+	int NthRoot(int n, int m)
+	{
+	    // Code here.
+	    long long l = 0;
+	    long long r = power(10,(9+n-1)/n)+1;
+	    
+	    while(r-l>1){
+	        long long mid = (l+r)/2;
+	        
+	        if(power(mid,(n*1ll)) <= (m*1ll))l=mid;
+	        else r=mid;
+	        
+	    }
+	    
+	    if(power(l,(n*1ll)) == m)return l;
+	    else return -1;
+	    
+	    return l;
+	}  
+};
