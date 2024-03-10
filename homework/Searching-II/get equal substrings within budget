@@ -1,0 +1,32 @@
+class Solution {
+public:
+
+    int equalSubstring(string s, string t, int maxCost) {
+        
+        int n = s.size();
+
+        int i = 0;
+        int j = 0;
+
+        int  price = 0;
+
+        int maxi_length = 0;
+
+        while( j < n){
+            price += abs(t[j] - s[j]);
+
+            while( i <= j && price >  maxCost){
+                price -= abs(s[i] - t[i]);
+                i++;
+            }
+
+           maxi_length = max(maxi_length,j-i+1);
+
+           j++;
+
+        }
+
+        return maxi_length;
+
+    }
+};
