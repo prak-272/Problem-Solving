@@ -1,1 +1,1 @@
-It has solutions for Searching-III
+It has solutions for Searching-III homework.
