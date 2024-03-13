@@ -1,3 +1,4 @@
+// sliding window O(n)  
 class Solution {
 public:
 
@@ -27,6 +28,60 @@ public:
         }
 
         return maxi_length;
+
+
+
+// binary search O(nlogn)
+
+
+class Solution {
+public:
+
+    bool checker(int m,string s,string t,int cost,int n){
+        int i=0;
+        int j=0;
+        
+        int price = 0;
+        int mini_price = INT_MAX;
+
+        while(j<n){
+            price += abs(s[j] - t[j]);
+
+            if(j -i + 1 == m){
+                mini_price = min(price,mini_price);
+                price -= abs(s[i]-t[i]);
+
+                i++;
+            }
+
+            j++;
+        }
+
+        return (mini_price <= cost);
+
+    }
+
+    int equalSubstring(string s, string t, int maxCost) {
+        
+        int n = s.size();
+
+        int l  = 0;
+        int r = n + 1;
+
+        while(r-l>1){
+            int m = l + (r-l)/2;
+
+            if(checker(m,s,t,maxCost,n))l=m;
+            else r=m;
+        }
+        
+        return l;
+
+    }
+};
+
+
+
 
     }
 };
