@@ -1,0 +1,58 @@
+class Solution {
+public:
+    
+    using ll = long long;
+
+    bool checker(int mid,vector<int>& b,int m,int k,int n){
+        int flowers = 0;
+        int count = 0;
+        for(int i=0;i<n;i++){
+            if( b[i] <= mid){
+                count++;
+                if(count == k){
+                    flowers++;
+                    count = 0;
+                }
+            }
+            else{
+               count = 0;
+            }
+        }
+        
+        return (flowers >= m);
+    }
+
+    int minDays(vector<int>& b, int m, int k) {
+        
+       int n = b.size();
+
+       ll maxi = (ll)m*k;
+
+       if(n < maxi)return -1;
+
+       int l= *min_element(b.begin(),b.end())-1;
+       int r = *max_element(b.begin(),b.end())+1;
+
+       while(r-l>1){
+          int mid = l + (r-l)/2;
+
+          cout << l <<  "  " <<  r << " " << mid <<  " ";
+
+          cout << k << " ";
+
+          if(checker(mid,b,m,k,n)){
+            r=mid;
+          }
+          else{
+            l = mid;
+          }
+       }
+
+       return r;
+
+
+
+        
+
+    }
+};
