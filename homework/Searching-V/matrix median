@@ -1,0 +1,50 @@
+int less_than(vector<int> &b,int num){
+        
+        int n = b.size();
+        
+        int l = -1;
+        int r = n;
+        
+        while(r-l>1){
+            int m = (l+r)/2;
+            
+            if(b[m] < num)l=m;
+            else r=m;
+            
+        }    
+          
+        return l+1;
+
+    }
+    
+
+    bool checker(int mid,vector<vector<int>>& b,int r ,int c ){
+        int cnt = 0;
+        for(int i=0;i<r;i++){
+            cnt = cnt + less_than(b[i],mid);
+        }
+        
+        return (cnt <= ((r*c)/2)); 
+    }
+
+int Solution::findMedian(vector<vector<int>> &b) {
+    
+    int n = b.size();
+    int m = b[0].size();
+    
+    int l = -1;
+    int r = 1e9 + 1;
+    
+    while(r-l >1){
+        int mid = l+(r-l)/2;
+        
+        if(checker(mid,b,n,m))l=mid;
+        else r=mid;
+    }
+    
+    return l;
+    
+    
+    
+    
+}
