@@ -9,6 +9,9 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
+
+// Recursive
+
 class Solution {
 public:
     
@@ -44,6 +47,67 @@ public:
 
         return res;
 
+
+    }
+};
+
+// Iterative
+
+class Solution {
+public:
+    
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+
+       if(root == NULL)return {};
+
+       queue<pair<TreeNode*,pair<int,int>>> q;
+       map<int,map<int,multiset<int>>> mp;
+
+       q.push({root,{0,0}});
+
+       while(!q.empty()){
+          int k = q.size();
+
+          for(int i=0;i<k;i++){
+             
+            pair<TreeNode*,pair<int,int>> l = q.front();
+
+            TreeNode* node = l.first;
+
+            int x = l.second.first;
+            int y = l.second.second;
+
+            mp[x][y].insert(node->val);
+
+            if(node->left)q.push({node->left,{x-1,y+1}});
+            if(node->right)q.push({node->right,{x+1,y+1}});
+
+            q.pop();
+
+          }
+       }
+
+       vector<vector<int>> ans;
+
+       for(auto i:mp){
+           vector<int> sol;
+           for(auto it:i.second){
+              while(it.second.size() != 0){     
+                // sol.insert(sol.end(),it.second.begin(),it.second.end());
+                auto itr = it.second.begin();
+
+                sol.push_back(*itr);
+                it.second.erase(itr); 
+              }
+           }
+
+           ans.push_back(sol);
+        }
+
+        return ans;
+
+
+        
 
     }
 };
