@@ -1,0 +1,39 @@
+class Solution{
+  public:
+    /*You are required to complete this function*/
+    int getLevelDiff(Node *root)
+    {
+       //Your code here
+       if(root == NULL)return 0;
+       
+       bool flag = true;
+       
+       int se  = 0;
+       int so = 0;
+       
+       queue<Node*> q;
+       q.push(root);
+       
+       while(!q.empty()){
+           
+           int k = q.size();
+           
+           for(int i=0;i<k;i++){
+             
+               if(flag)so += q.front()->data;
+               else se += q.front()->data;
+               
+               if(q.front()->left != NULL)q.push(q.front()->left);
+               if(q.front()->right != NULL)q.push(q.front()->right);
+               
+               q.pop();
+           }
+           
+           flag = !flag;
+           
+       }
+       
+       return so-se;
+       
+    }
+};
