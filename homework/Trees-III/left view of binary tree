@@ -1,0 +1,28 @@
+vector<int> printLeftView(BinaryTreeNode<int>* root) {
+    // Write your code here.
+    
+     vector<int> left_view;
+
+     if(root == NULL)return {};
+
+     queue<BinaryTreeNode<int>*> q;
+     q.push(root);
+
+     while(!q.empty()){
+         int k = q.size();
+
+         for(int i=0;i<k;i++){
+             BinaryTreeNode<int>* node = q.front();
+             q.pop();
+
+             if(i == 0)left_view.push_back(node->data);
+
+             if(node->left)q.push(node->left);
+             if(node->right)q.push(node->right);
+
+         }
+     }
+
+     return left_view;
+
+}
