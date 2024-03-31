@@ -1,0 +1,49 @@
+//Function to return a list containing the bottom view of the given tree.
+
+class Solution {
+  public:
+    vector <int> bottomView(Node *root) {
+        // Your Code Here
+        
+        if(root == NULL)return {};
+
+       queue<pair<Node*,pair<int,int>>> q;
+       map<int,map<int,vector<int>>> mp;
+
+       q.push({root,{0,0}});
+
+       while(!q.empty()){
+          int k = q.size();
+
+          for(int i=0;i<k;i++){
+             
+            pair<Node*,pair<int,int>> l = q.front();
+
+            Node* node = l.first;
+
+            int x = l.second.first;
+            int y = l.second.second;
+
+            mp[x][y].push_back(node->data);
+
+            if(node->left)q.push({node->left,{x-1,y+1}});
+            if(node->right)q.push({node->right,{x+1,y+1}});
+
+            q.pop();
+
+          }
+       }
+
+       vector<int> ans;
+
+       for(auto i:mp){
+           pair<int,vector<int>> p = *i.second.rbegin();
+           ans.push_back(p.second.back());
+        }
+
+        return ans;
+
+
+        
+    }
+};
