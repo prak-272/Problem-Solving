@@ -1,0 +1,60 @@
+/* A binary tree node
+struct Node
+{
+    int data;
+    Node* left, * right;
+}; */
+
+class Solution{
+    public:
+    /* Should return minimum distance between a and b
+    in a tree with given root*/
+    Node* in_path(Node* node,int p,int  q){
+      
+      if(node == NULL)return NULL;
+
+      if(node->data == p || node->data == q )return node;
+
+      Node* left = in_path(node->left,p,q);
+      Node* right = in_path(node->right,p,q);     
+     
+      if(left == NULL && right == NULL)return NULL;
+      if(left == NULL)return right;
+      else if(right == NULL)return left;
+      else return node;
+       
+
+      
+   }
+   
+   int height1 = 0;
+   
+   bool is_path(Node* node,int target){
+       
+       if(node == NULL)return false;
+       
+       if(node->data == target || is_path(node->left,target) || is_path(node->right,target)){
+           height1++;
+           return true;
+       }
+       
+       
+       return false;
+       
+       
+   }
+    
+    
+    int findDist(Node* root, int a, int b) {
+        // Your code here
+        
+        Node* lc = in_path(root,a,b);
+        
+        is_path(lc,a);
+        is_path(lc,b);
+        
+        return height1-2;
+    
+        
+    }
+};
