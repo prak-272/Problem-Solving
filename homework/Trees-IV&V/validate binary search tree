@@ -10,6 +10,8 @@
  * };
  */
 
+// using valid value algorithm and post order traversal
+
 class Solution {
 public:
     
@@ -33,5 +35,42 @@ public:
 
         return valid_bst(root,mini,maxi);
         
+    }
+};
+
+// using inorder traversal
+
+class Solution {
+public:
+    
+    TreeNode* prev = NULL;
+
+    void valid_bst(TreeNode* node,bool& result){
+
+        if(node == NULL)return; 
+
+        valid_bst(node->left,result);
+
+        if(prev != NULL)cout << node->val << " " << prev->val << " ";
+
+        if(prev != NULL){
+            if(prev->val >= node->val)
+              result = false;
+        }
+
+        prev =  node;
+
+        valid_bst(node->right,result);
+
+
+    }
+
+    bool isValidBST(TreeNode* root) {
+        
+        bool result = true;
+        valid_bst(root,result);
+        
+        return result;
+
     }
 };
