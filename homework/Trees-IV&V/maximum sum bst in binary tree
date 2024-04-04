@@ -1,0 +1,82 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+
+const int inf = 1e5;
+
+struct NodeMaxBS{
+    int mini;
+    int maxi;
+    bool isBST;
+    int sum;
+
+    NodeMaxBS(){};
+
+    NodeMaxBS(int mini1,int maxi1,bool isBST1,int sum1){
+        mini = mini1;
+        maxi = maxi1;
+        isBST = isBST1;
+        sum = sum1;
+    }
+};
+
+NodeMaxBS* sum_bst(TreeNode* node,int& maximum_sum){
+   
+   if(node == NULL)return new NodeMaxBS(inf,-inf,true,0);
+
+   NodeMaxBS* left = sum_bst(node->left,maximum_sum);
+   NodeMaxBS* right = sum_bst(node->right,maximum_sum);
+
+   NodeMaxBS* rtn = new NodeMaxBS();
+
+   if(left->isBST == true && right->isBST == true && left->maxi < node->val && right->mini > node->val)
+      rtn->isBST = true;
+   else
+      rtn->isBST = false;
+
+    rtn->mini = min(node->val,left->mini);
+    rtn->maxi = max(right->maxi,node->val);
+
+    if(rtn->isBST == true){
+        rtn->sum = left->sum + right->sum + node->val;
+        maximum_sum = max(maximum_sum,rtn->sum);
+    }   
+    else{
+       rtn->sum = 0;
+    }
+
+    return rtn;
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+class Solution {
+public:
+    int maxSumBST(TreeNode* root) {
+       
+       int maximum_sum = 0;
+       NodeMaxBS* sol = sum_bst(root,maximum_sum);
+        
+       return maximum_sum; 
+
+    }
+};
