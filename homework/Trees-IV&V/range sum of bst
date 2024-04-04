@@ -1,0 +1,44 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    
+    int bst_sum(TreeNode* node,int low,int high){
+
+        if(node == NULL)return 0;
+
+        int res = 0;
+        
+        if(node->val > high){
+           res =  bst_sum(node->left,low,high);
+           if(node->val >= low && node->val <= high)res += node->val;
+        }   
+        else if(node->val < low){
+            res = bst_sum(node->right,low,high);
+            if(node->val >= low && node->val <= high)res += node->val;
+        }   
+        else{
+            res = bst_sum(node->left,low,high) + bst_sum(node->right,low,high);
+            if(node->val >= low && node->val <= high)res += node->val;
+        }  
+
+        return res;          
+           
+
+    }
+
+    int rangeSumBST(TreeNode* root, int low, int high) {
+        
+        return bst_sum(root,low,high);
+
+    }
+};
