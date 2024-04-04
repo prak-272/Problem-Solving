@@ -9,6 +9,9 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
+
+// using postorder traversal
+
 class Solution {
 public:
     
@@ -39,6 +42,39 @@ public:
     int rangeSumBST(TreeNode* root, int low, int high) {
         
         return bst_sum(root,low,high);
+
+    }
+};
+
+// using preorder traversal
+
+class Solution {
+public:
+    
+    void bst_sum(TreeNode* node,int low,int high,int& sum){
+        
+        if(node == NULL)return;
+
+        if(node->val >= low && node->val <= high)sum += node->val;
+
+        if(node->val > high)
+            bst_sum(node->left,low,high,sum);
+        else if(node->val < low)
+            bst_sum(node->right,low,high,sum);
+        else{
+            bst_sum(node->left,low,high,sum);
+            bst_sum(node->right,low,high,sum);
+        }        
+           
+
+    }
+
+    int rangeSumBST(TreeNode* root, int low, int high) {
+        
+        int sum =0;
+        bst_sum(root,low,high,sum);
+
+        return sum;
 
     }
 };
