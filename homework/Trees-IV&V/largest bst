@@ -1,0 +1,79 @@
+/* Tree node structure  used in the program
+
+struct Node {
+    int data;
+    Node *left;
+    Node *right;
+
+    Node(int val) {
+        data = val;
+        left = right = NULL;
+    }
+};*/
+
+const int inf = 1e7;
+
+struct NodeBS{
+    int mini;
+    int maxi;
+    bool isBST;
+    int size;
+    
+    NodeBS(){};
+    
+    NodeBS(int mini1,int maxi1,bool isBST1,int size1){
+        mini = mini1;
+        maxi = maxi1;
+        isBST = isBST1;
+        size = size1;
+    }
+    
+};
+
+
+NodeBS* size_bst(Node* node){
+    
+    if(node == NULL)return new NodeBS(inf,-inf,true,0);
+    
+    NodeBS* left = size_bst(node->left);
+    NodeBS* right = size_bst(node->right);
+    
+    NodeBS* rtn = new NodeBS();
+    
+    if( left->isBST == true && right->isBST == true && node->data > left->maxi && node->data < right->mini){
+        rtn->isBST = true;
+    }
+    else{
+        rtn->isBST = false;
+    }
+    
+    rtn->mini = min(left->mini,node->data);
+    rtn->maxi = max(node->data,right->maxi);
+    
+    if(rtn->isBST == true)
+       rtn->size = left->size + 1 + right->size;
+    else
+       rtn->size = max(left->size,right->size);
+       
+    return rtn;   
+    
+}
+
+
+class Solution{
+    public:
+    /*You are required to complete this method */
+    // Return the size of the largest sub-tree which is also a BST
+    int largestBst(Node *root)
+    {
+    	//Your code here
+    	
+    	NodeBS* result = size_bst(root);
+    	
+    	return result->size;
+    	
+    	
+    	
+    	
+    }
+};
