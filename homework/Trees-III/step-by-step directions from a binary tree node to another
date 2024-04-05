@@ -1,0 +1,75 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    
+    bool direction(TreeNode* node,int dest,string& path){
+          
+        if(node == NULL)return false;
+
+        if(node->val == dest)return true;
+        else if(direction(node->left,dest,path)){
+            path += "L";
+            return true;
+        }
+        else if(direction(node->right,dest,path)){
+            path += "R";
+            return true;
+        }
+
+        return false;
+
+    }
+    
+    string getDirections(TreeNode* root, int s, int d) {
+        
+        string start;
+        direction(root,s,start);
+        
+        reverse(start.begin(),start.end());
+
+        string dest;
+        direction(root,d,dest);
+
+        reverse(dest.begin(),dest.end());
+        
+        int n = start.size();
+        int m = dest.size();
+
+        cout << start << "  " << dest << " ";
+
+        int index = min(n,m);
+
+        for(int i=0;i<min(m,n);i++){
+            cout << start[i] << " " << dest[i] << " ";
+            if(start[i] != dest[i]){
+                index = i;
+                break;
+            }
+        }
+
+        cout << index << " ";
+
+        string res;
+        
+        for(int i=index;i<n;i++){
+            res += 'U';
+        }
+
+        for(int i=index;i<m;i++){
+            res += dest[i];
+        }
+         
+        return res;
+
+    }
+};
