@@ -46,7 +46,7 @@ bool check(vector<ll>& preorder,int prestart,int preend){
 	int p = preend+1;
 
     cout << preorder[prestart] << " ";
-    
+    /*
 	for(int i=prestart+1;i<=preend;i++){
 		if(preorder[i] > preorder[prestart])
 		  p = i;
@@ -63,7 +63,13 @@ bool check(vector<ll>& preorder,int prestart,int preend){
     else if(leftend == prestart) 
        return check(preorder,rightstart,preend);    
 
+    */
+     bool flag_left = preorder[preend] < preorder[prestart];
+     bool flag_right = preorder[prestart+1] > preorder[prestart];
 
+     if(!flag_left && !flag_right)return false;
+      return check(preorder,prestart+1,preend);
+     
 }
  
 
