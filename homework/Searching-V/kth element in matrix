@@ -1,0 +1,78 @@
+//{ Driver Code Starts
+// kth largest element in a 2d array sorted row-wise and column-wise
+#include<bits/stdc++.h>
+using namespace std;
+#define MAX 1000
+int mat[MAX][MAX];
+int kthSmallest(int mat[MAX][MAX], int n, int k);
+// driver program to test above function
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        int n;
+        cin>>n;
+    
+        for(int i=0;i<n;i++)
+            for(int j=0;j<n;j++)
+                cin>>mat[i][j];
+        int r;
+        cin>>r;
+        cout<<kthSmallest(mat,n,r)<<endl;
+    }
+     // cout << "7th smallest element is " << kthSmallest(mat, 4, 7);
+      return 0;
+}
+
+// } Driver Code Ends
+
+
+
+
+bool checker(int m,int mat[MAX][MAX],int n,int k){
+    
+    int no_elements = 0;
+    
+    int i = n-1;
+    int j = 0;
+    
+    while(i >= 0 && j >= 0 && i < n && j < n){
+        
+        if(m > mat[i][j]){
+            no_elements += i+1;
+            j++;
+        }
+        else{
+            i--;
+        }
+        
+    }
+    
+    return (no_elements < k);
+    
+    
+    
+    
+}
+
+int kthSmallest(int mat[MAX][MAX], int n, int k)
+{
+  //Your code here
+    
+    int l = 0;
+    int r = 1e4 +1;
+    
+    while(r-l>1){
+        int m = l+(r-l)/2;
+        
+        if(checker(m,mat,n,k))l=m;
+        else r=m;
+        
+    }
+    
+    return l;
+    
+    
+}
