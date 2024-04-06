@@ -1,0 +1,99 @@
+/************************************************************
+
+    Following is the Binary Tree node structure:
+
+    template <typename T>
+    class TreeNode
+    {
+    public:
+        T data;
+        TreeNode<T> *left;
+        TreeNode<T> *right;
+
+        TreeNode(T data)
+        {
+            this -> data = data;
+            left = NULL;
+            right = NULL;
+        }
+
+        ~TreeNode()
+        {
+            if(left)
+                delete left;
+            if(right)
+                delete right;
+        }
+    };
+
+************************************************************/
+#include<bits/stdc++.h>
+
+void left_boundary(TreeNode<int>* node,vector<int>& sol){
+    
+    if(node == NULL)return;
+    if(node->left == NULL && node->right == NULL)return;
+
+    sol.push_back(node->data);
+    
+    if(node->left != NULL)left_boundary(node->left,sol);
+    else if(node->right != NULL)left_boundary(node->right,sol);
+
+    
+}
+
+void leaf_nodes(TreeNode<int>* root, vector<int>& sol){
+
+        TreeNode<int>* node = root;
+        stack<TreeNode<int>*> st;
+
+        while(node != NULL || !st.empty()){
+            
+            if(node != NULL){
+                st.push(node);
+                node = node->left;
+            }
+            else{
+                node = st.top();
+
+                if(node->left == NULL && node->right == NULL)
+                   sol.push_back(node->data);
+
+                st.pop();
+
+                node = node->right;   
+
+            }
+
+        }
+
+}
+
+void right_boundary(TreeNode<int>* node,vector<int>& sol){
+    
+    if(node == NULL)return;
+    if(node->left == NULL && node->right == NULL)return;
+    
+    if(node->right != NULL)right_boundary(node->right,sol);
+    else if(node->left != NULL) right_boundary(node->left,sol);
+
+    sol.push_back(node->data);
+
+}
+
+
+vector<int> traverseBoundary(TreeNode<int> *root)
+{
+	// Write your code here.
+    
+    vector<int> sol;
+
+    sol.push_back(root->data);
+
+    left_boundary(root->left,sol);
+    leaf_nodes(root,sol);
+    right_boundary(root->right,sol);
+
+    return sol; 
+
+}
