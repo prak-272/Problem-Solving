@@ -1,0 +1,71 @@
+class Trie {
+public:
+    
+    bool is_end_of_string;
+    Trie* children[26];
+    
+    Trie() {
+       is_end_of_string = false;
+
+       for(int i=0;i<26;i++)
+         children[i] = NULL;      
+
+    }
+    void insert(string word) {
+        
+       Trie* temp = this;
+       int n = word.size();
+
+       for(int i=0;i<n;i++){
+          if(temp->children[word[i]-'a'] == NULL)
+            temp->children[word[i]-'a'] = new Trie();
+
+          temp = temp->children[word[i]-'a'];
+
+       }
+
+       temp->is_end_of_string = true;
+
+    }
+    
+    bool search(string word) {
+        
+        Trie* temp = this;
+        int n = word.size();
+
+        for(int i=0;i<n;i++){
+            if(temp->children[word[i]-'a'] == NULL)
+               return false;
+
+            temp = temp->children[word[i]-'a'];   
+        }
+
+        return temp->is_end_of_string;
+
+    }
+    
+    bool startsWith(string prefix) {
+        
+        Trie* temp = this;
+        int n = prefix.size();
+
+        for(int i=0;i<n;i++){
+            if(temp->children[prefix[i]-'a'] == NULL)
+               return false;
+
+            temp = temp->children[prefix[i]-'a'];   
+        }
+
+        return true;
+
+
+    }
+};
+
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie* obj = new Trie();
+ * obj->insert(word);
+ * bool param_2 = obj->search(word);
+ * bool param_3 = obj->startsWith(prefix);
+ */
