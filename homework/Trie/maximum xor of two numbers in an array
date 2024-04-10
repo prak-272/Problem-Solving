@@ -1,0 +1,67 @@
+class Trie{
+   public:
+   Trie* children[2];
+
+   Trie(){
+     for(int i=0;i<2;i++)
+       children[i] = NULL;
+   }
+
+};
+
+class Solution {
+public:
+    
+    void insert(int num,Trie* node){
+         
+        for(int i=31;i>=0;i--){       
+           int bit = (num>>i)&1;
+          
+           if(node->children[bit] == NULL)
+              node->children[bit] = new Trie();
+
+           node = node->children[bit];   
+        } 
+
+    }
+
+    int find_xor(int num,Trie* node){
+        
+        int curr_xor = 0;
+
+        for(int i=31;i>=0;i--){
+            int bit = (num>>i)&1;
+
+            if(node->children[1-bit] != NULL){
+                curr_xor += pow(2,i);
+                node = node->children[1-bit];
+            }
+            else 
+              node = node->children[bit];
+               
+        }
+
+        return curr_xor;
+
+    }
+    
+    int findMaximumXOR(vector<int>& nums) {
+        
+        Trie* root = new Trie();
+ 
+        insert(nums[0],root);
+
+        int n = nums.size();
+        int maxi_xor = 0; 
+     
+        for(int i=1;i<n;i++){
+             
+            maxi_xor = max(maxi_xor,find_xor(nums[i],root));
+            insert(nums[i],root); 
+
+        }
+
+        return maxi_xor;   
+
+    }
+};
