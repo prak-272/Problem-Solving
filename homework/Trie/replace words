@@ -1,0 +1,90 @@
+class Trie{
+   
+   public:
+
+   bool is_end_of_string;
+   Trie* children[26];
+
+   Trie(){
+     is_end_of_string = false; 
+
+     for(int i=0;i<26;i++)
+       children[i] = NULL;
+   }
+
+};
+
+
+
+class Solution {
+public:
+    
+void insert(Trie* node,string k){
+   
+   int n = k.size();
+   
+   for(int i=0;i<n;i++){
+    if(node->children[k[i]-'a'] == NULL)
+       node->children[k[i]-'a'] = new Trie();
+
+    node = node->children[k[i]-'a'];   
+   }
+
+   node->is_end_of_string = true;
+
+}
+
+string find_root(Trie* node,string k){
+    
+    int n = k.size();
+
+    string rtn;
+    
+    for(int i=0;i<n;i++){
+        if(node->children[k[i]-'a'] == NULL)
+          return k;
+        
+        rtn += k[i];
+        node = node->children[k[i]-'a'];
+
+        if(node->is_end_of_string == true)
+           return rtn; 
+    }
+
+    return k;
+
+}
+
+    
+
+string replaceWords(vector<string>& dictionary, string sentence) {
+        
+        Trie* root = new Trie();
+
+        for(auto k:dictionary)
+          insert(root,k);
+
+        int n = sentence.size();
+        
+        string res;
+        string temp;
+
+        for(int i=0;i<n;i++){
+            if(sentence[i] == ' ' ){
+                res += find_root(root,temp);  
+                res += " ";
+
+                temp = "";
+            }
+            else{
+                temp += sentence[i];
+            }
+
+        } 
+
+        res += find_root(root,temp);
+
+        return res;
+
+    }
+};
