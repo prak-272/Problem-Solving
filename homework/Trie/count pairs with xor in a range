@@ -1,0 +1,79 @@
+class Trie{
+   
+   public:
+
+   int count;
+   Trie* children[2];
+
+   Trie(){
+    count = 0;
+
+    for(int i=0;i<2;i++)
+      children[i] = NULL;
+   }
+
+};
+
+class Solution {
+public:
+     
+    void insert(int num,Trie* node){
+        
+        for(int i=15;i>=0;i--){
+            int bit = (num>>i)& 1;
+
+            if(node->children[bit] == NULL)
+              node->children[bit] = new Trie();
+
+            node = node->children[bit];
+
+            node->count++;  
+        }
+
+    }
+    
+    int xor_less_than_k(int num,Trie* node,int k){
+        
+        int cnt = 0;
+
+        for(int i=15;i>=0;i--){
+            int bit_num = (num>>i)&1;
+            int bit_k = (k>>i)&1;
+
+            if(bit_k == 1){
+                if(node->children[bit_num] != NULL)
+                  cnt += node->children[bit_num]->count;
+
+                node = node->children[1-bit_num];  
+            }
+            else if(bit_k == 0){
+                node = node->children[bit_num];
+            }
+
+            if(node == NULL)break;
+        }
+
+        return cnt;
+
+    }
+    
+    int countPairs(vector<int>& nums, int low, int high) {
+        
+        Trie* root = new Trie();
+
+        int n = nums.size();
+
+        int ans = 0;
+
+        insert(nums[0],root);
+
+        for(int i=1;i<n;i++){
+            ans += xor_less_than_k(nums[i],root,high+1) - xor_less_than_k(nums[i],root,low);
+            insert(nums[i],root);
+        }  
+        
+        return ans;
+        
+
+    } 
+};
