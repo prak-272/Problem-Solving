@@ -1,0 +1,90 @@
+const int inf = 1e5; 
+
+class Trie{
+   public:
+   int index;
+   int length;
+   Trie* children[26];
+
+   Trie(){
+     index = inf;
+     length = inf;
+
+     for(int i=0;i<26;i++)
+      children[i] = NULL; 
+   }
+
+};
+
+
+class Solution {
+public:
+
+    void suffix(string w,Trie* node,vector<int>& sol){
+        
+        int n = w.size();
+
+        for(int i=n-1;i>=0;i--){
+           if(node->children[w[i]-'a'] == NULL)
+             break;
+          
+           node = node->children[w[i]-'a'];  
+        }
+
+        sol.push_back(node->index);
+        
+
+
+    }
+
+    void insert(Trie* node,string w,int in){
+         
+         int n = w.size();
+
+         if(node->length > n){
+            node->length = n;
+            node->index = in;
+         }
+         else if(node->length == n){
+            if(node->index > in)
+              node->index = in;
+         }
+
+         for(int i=n-1;i>=0;i--){
+            if(node->children[w[i]-'a'] == NULL)
+               node->children[w[i]-'a'] = new Trie();
+
+            node= node->children[w[i]-'a'];
+
+            if(node->length > n){
+                node->length = n;
+                node->index = in;
+            }
+            else if(node->length == n){
+                if(node->index > in){
+                    node->index = in;
+                }
+            }
+
+         }
+
+    }
+    
+    vector<int> stringIndices(vector<string>& wc, vector<string>& wq) {
+
+        Trie* root = new Trie();
+         
+         int n = wc.size();
+
+         for(int i=0;i<n;i++)
+           insert(root,wc[i],i); 
+
+        vector<int> sol;
+
+        for(auto w:wq)
+          suffix(w,root,sol); 
+
+        return sol; 
+
+    }
+};
