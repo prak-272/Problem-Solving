@@ -1,0 +1,38 @@
+class Solution {
+public:
+    bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {
+        
+        vector<int> adja_list[n];
+
+        for(auto e:edges){
+            int s = e[0];
+            int d = e[1];
+            
+            adja_list[s].push_back(d);
+            adja_list[d].push_back(s);
+
+        }
+
+        queue<int> q;
+        vector<int> visi(n);
+        
+        visi[source] = true;
+        q.push(source);
+
+        while(!q.empty()){
+            
+            int i = q.front();
+            q.pop();
+
+            for(auto j:adja_list[i]){
+                if(!visi[j]){
+                    visi[j] = true;
+                    q.push(j);
+                }
+            }
+        }
+
+        return visi[destination] == true;
+
+    }
+};
