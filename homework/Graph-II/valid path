@@ -1,0 +1,43 @@
+
+int distance(int i,int j,int x,int y){
+    return ceil(sqrt((i-x)*(i-x) + (j-y)*(j-y)));
+}
+
+bool inside_circle(int i,int j,int nc,int r,vector<int>& xc,vector<int>& yc){
+    
+    for(int c=0;c<nc;c++){
+        if(distance(i,j,xc[c],yc[c]) <= r)
+          return true;
+    } 
+    
+    return false;
+    
+}
+
+int visi[104][104];
+int directions[8][2] = {{0,1},{0,-1},{1,0},{-1,0},{1,1},{-1,-1},{-1,1},{1,-1}};
+
+void dfs(int i,int j,int n,int m,int nc,int r,vector<int>& xc,vector<int>& yc){
+    
+    if(i < 0 || j < 0 || i > n ||  j > m || visi[i][j] == 1 || inside_circle(i,j,nc,r,xc,yc))
+      return;
+    
+    visi[i][j] = 1;
+    
+    for(auto dir:directions){
+        int new_i = i+dir[0];
+        int new_j = j+dir[1];
+        
+        dfs(new_i,new_j,n,m,nc,r,xc,yc);
+    } 
+    
+}
+
+string Solution::solve(int x, int y, int nc, int r, vector<int> &xc, vector<int> &yc) {
+    
+    memset(visi,0,sizeof visi);
+    dfs(0,0,x,y,nc,r,xc,yc);
+    
+    return (visi[x][y]?"YES":"NO");    
+    
+}
