@@ -1,0 +1,48 @@
+class Solution {
+public:
+    
+    vector<pair<int,int>> directions = {{0,1},{1,0},{0,-1},{-1,0}};
+
+    void dfs(int i,int j,vector<vector<char>>& grid,vector<vector<bool>>& visi){
+        
+        int n = grid.size();
+        int m = grid[0].size();
+
+        if(i >= n || j >= m || i <0 || j < 0 || grid[i][j] == '0' || visi[i][j] == true)
+          return;
+
+        visi[i][j] = true;
+
+        for(auto dirc:directions){
+            
+            int new_i = i + dirc.first;
+            int new_j = j + dirc.second;
+
+            dfs(new_i,new_j,grid,visi);
+
+        }
+
+    }
+    
+    int numIslands(vector<vector<char>>& grid) {
+        
+        int n = grid.size();
+        int m = grid[0].size();
+
+        vector<vector<bool>> visi(n,vector<bool>(m,false));
+
+        int cnt = 0;
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j] == '1' && !visi[i][j]){
+                    cnt++;
+                    dfs(i,j,grid,visi);
+                }
+            }
+        }
+
+        return cnt;
+
+    }
+};
