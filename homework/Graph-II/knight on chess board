@@ -1,0 +1,41 @@
+
+
+int Solution::knight(int x, int y, int x1, int y1, int x2, int y2) {
+    
+    int visi[501][501];
+    memset(visi,0,sizeof visi);
+    
+    int directions[8][2] = {{2,1},{-2,1},{2,-1},{-2,-1},{1,2},{-1,2},{-1,-2},{1,-2}};
+    
+    queue<vector<int>> q;
+    
+    q.push({x1,y1,0});
+    visi[x1][y1] = true;
+    
+    int result = 0;
+    
+    while(!q.empty()){
+        
+        vector<int> f = q.front();
+        q.pop();
+        
+        for(auto dir:directions){
+            int i = f[0]+dir[0];
+            int j = f[1] + dir[1];
+            
+            if(i <= 0 || j <= 0 || i > x || j > y || visi[i][j]== 1 )
+              continue;  
+            
+            q.push({i,j,f[2]+1});
+            visi[i][j] = 1;
+            
+            if(i == x2 && j == y2)
+              result = f[2] + 1; 
+             
+        }
+        
+    }
+   
+    return ((visi[x2][y2] == 1)?result:-1);
+ 
+}
