@@ -1,0 +1,42 @@
+int dfs(int i,vector<int> adja_list[],int& maxi_distance){
+    
+    int h1 = 0;
+    int h2 = 0;
+    
+    for(auto next:adja_list[i]){
+        int temp = 1+dfs(next,adja_list,maxi_distance);
+        
+        if(temp > h1){
+            h2 = h1;
+            h1 = temp;
+        }
+        else if(temp > h2){
+            h2 = temp;
+        }
+    }
+    
+    maxi_distance = max(maxi_distance,h1+h2);
+    
+    return h1;
+    
+}
+
+int Solution::solve(vector<int> &b) {
+     
+    int n = b.size();
+    
+    int root = -1;
+    
+    vector<int> adja_list[n+1];
+    int maxi_distance =0;
+    
+    for(int i=0;i<n;i++){
+        if(b[i] == -1)root = i;
+        else adja_list[b[i]].push_back(i);
+    } 
+    
+    dfs(root,adja_list,maxi_distance);
+    
+    return maxi_distance;
+    
+}
