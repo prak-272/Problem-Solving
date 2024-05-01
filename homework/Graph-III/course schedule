@@ -1,0 +1,42 @@
+class Solution {
+public:
+    bool canFinish(int n, vector<vector<int>>& prerequisites) {
+        
+        vector<int> adja_list[n];
+        vector<int> indegree(n,0);
+
+        for(auto p:prerequisites){
+            adja_list[p[1]].push_back(p[0]);
+            indegree[p[0]]++;
+        }
+
+        queue<int> q;
+        int count = 0;
+
+        for(int i=0;i<n;i++){
+            if(indegree[i] == 0){
+                q.push(i);
+            }
+        }
+
+        while(!q.empty()){
+            int v = q.front();
+            q.pop();
+
+            count++;
+
+            for(auto neighbour:adja_list[v]){
+                if(--indegree[neighbour] == 0)
+                  q.push(neighbour);
+            }
+        }
+
+        cout << count << " ";
+
+        return (count==n);
+
+
+
+
+    }
+};
