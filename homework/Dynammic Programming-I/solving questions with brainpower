@@ -1,0 +1,20 @@
+class Solution {
+public:
+    
+    using ll  =long long;
+
+    long long mostPoints(vector<vector<int>>& questions) {
+        
+        int n = questions.size();
+
+        vector<ll> ca(1e6,0);
+        ca[n-1] = questions[n-1][0];
+
+        for(ll i=n-2;i>=0;i--){
+            ca[i] = max(ca[i+1],questions[i][0]+ca[i+questions[i][1]+1]);
+        }
+
+        return ca[0];
+
+    }
+};
