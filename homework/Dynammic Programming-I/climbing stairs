@@ -1,0 +1,17 @@
+class Solution {
+public:
+
+    int climbStairs(int n) {
+
+        vector<int> ca(n+1,-1);
+        
+        ca[0] = 1;
+        ca[1] = 1;
+
+        for(int i=2;i<=n;i++)
+           ca[i] = ca[i-1] + ca[i-2];
+
+        return ca[n];   
+        
+    }
+};
