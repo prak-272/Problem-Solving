@@ -1,0 +1,72 @@
+class Solution {
+public:
+    
+    using  ll = long long;
+    
+    vector<ll> dijk(int source,int n,vector<pair<int,int>> adja_list[]){
+
+        vector<ll> dist(n,1e18);
+        vector<bool> visi(n,false);
+
+        priority_queue<pair<ll,int>,vector<pair<ll,int>>,greater<pair<ll,int>>> pq; 
+        pq.push({0,source});
+
+        dist[source] = 0;
+
+        while(!pq.empty()){
+            auto curr = pq.top();
+            pq.pop();
+
+            ll curr_dist = curr.first;
+            int curr_node = curr.second;
+            
+            if(visi[curr_node])
+             continue;
+
+            visi[curr_node] = true;
+
+            for(auto neighbour:adja_list[curr_node]){
+                int n_node = neighbour.first;
+                int e_weight = neighbour.second;
+
+                if(visi[n_node]) continue;
+
+                if(dist[n_node] > curr_dist + e_weight){
+                    dist[n_node] = e_weight + curr_dist;
+                    pq.push({e_weight+curr_dist,n_node});
+                }
+
+            } 
+
+        }
+
+         return dist;
+
+    }
+    
+    vector<bool> findAnswer(int n, vector<vector<int>>& edges) {
+        
+        vector<pair<int,int>> adja_list[n];
+
+        for(auto p:edges){
+            adja_list[p[0]].push_back({p[1],p[2]});
+            adja_list[p[1]].push_back({p[0],p[2]});
+        }
+
+        vector<bool> solution(edges.size());   
+
+        vector<ll> forw = dijk(0,n,adja_list);
+        vector<ll> back = dijk(n-1,n,adja_list);
+
+        for(int i=0;i<edges.size();i++){
+            if((forw[edges[i][0]] + back[edges[i][1]] + edges[i][2]) == forw[n-1] || (forw[edges[i][1]] + back[edges[i][0]] + edges[i][2]) == forw[n-1])
+              solution[i] = true;
+            else 
+              solution[i] = false;  
+        } 
+
+        return solution;
+     
+
+    }
+};
