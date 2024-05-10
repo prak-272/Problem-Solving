@@ -1,0 +1,38 @@
+class Solution {
+public:
+    
+    int solve(vector<int> nums){
+       
+       int n = nums.size();
+
+       if(n== 1)return nums[0]; 
+
+       vector<int> ca(n,-1);
+
+       ca[0] = nums[0];
+       ca[1] = max(nums[1],nums[0]); 
+
+       for(int i=2;i<n;i++)
+        ca[i] = max(nums[i]+ ca[i-2], ca[i-1]);
+
+       return ca[n-1];
+          
+    }
+    
+    
+    int rob(vector<int>& nums) {
+       
+       int n = nums.size();
+
+       if(n == 1)return nums[0];
+
+       vector<int> nums1 = nums;
+       vector<int> nums2 = nums;
+
+       nums1.pop_back();
+      nums2.erase(nums2.begin());
+
+       return  max(solve(nums2),solve(nums1));
+         
+    }
+};
