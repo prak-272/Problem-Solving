@@ -1,1 +1,1 @@
-It has solution for hopmework
+It has solution for homework.
