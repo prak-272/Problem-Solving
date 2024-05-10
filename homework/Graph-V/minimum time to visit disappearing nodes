@@ -1,0 +1,49 @@
+class Solution {
+public:
+    vector<int> minimumTime(int n, vector<vector<int>>& edges, vector<int>& disappear) {
+        
+        vector<int> distance(n,INT_MAX);
+
+        vector<pair<int,int>> adja_list[n];
+
+        for(auto p:edges){
+            adja_list[p[0]].push_back({p[1],p[2]});
+            adja_list[p[1]].push_back({p[0],p[2]});
+        }
+
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> pq;
+        pq.push({0,0});
+
+        distance[0] = 0;
+ 
+        while(!pq.empty()){
+            pair<int,int> curr = pq.top();
+            pq.pop();
+
+            if(curr.first > distance[curr.second])
+              continue;
+
+            for(auto neighbour:adja_list[curr.second]){
+                int nnode = neighbour.first;
+                int eweight = neighbour.second;
+
+                if(curr.first+eweight >= disappear[nnode])
+                    continue;
+
+                if(curr.first+eweight < distance[nnode]){
+                  distance[nnode] = curr.first+eweight;    
+                  pq.push({curr.first+eweight,nnode}); 
+                }  
+            } 
+
+        }
+
+        for(int i=0;i<n;i++){
+            if(distance[i] == INT_MAX)
+              distance[i] = -1;
+        }
+
+        return distance;
+
+    }
+};
