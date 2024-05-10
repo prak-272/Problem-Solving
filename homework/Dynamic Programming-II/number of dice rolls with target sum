@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int numRollsToTarget(int n, int k, int target) {
+
+       int ca[n+1][target+1];
+
+       for(int i=0;i<(n+1);i++){
+        for(int j=0;j<(target+1);j++){
+            ca[i][j] = 0;
+        }
+       } 
+        
+       int MOD = 1e9+7;
+
+       ca[0][0] = 1;
+
+
+       for(int i=1;i<(n+1);i++){
+        for(int j=0;j<(target+1);j++){
+            for(int l=1;l<=k;l++){
+                if(j-l >= 0)
+                ca[i][j] = (ca[i][j] + ca[i-1][j-l])%MOD;
+            }
+        }
+       }
+
+       return ca[n][target];
+
+    }
+};
