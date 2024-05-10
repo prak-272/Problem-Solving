@@ -1,0 +1,38 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int main()
+{
+    int x,y,z; cin >> x >> y >> z;
+
+	int n; cin >> n;
+	
+	vector<int> a(n);
+	for(int i=0;i<n;i++)cin >> a[i];
+
+	vector<int> l_max(n);
+	l_max[0] = a[0]*x;
+
+	for(int i=1;i<n;i++){
+		l_max[i] = max(a[i]*x,l_max[i-1]);
+	}
+
+	vector<int> r_max(n);
+
+	r_max[n-1] = z*a[n-1];
+
+	for(int i=n-2;i>=0;i--){
+		r_max[i] = max(z*a[i],r_max[i+1]);
+	}
+
+	int solution = INT_MIN;
+ 
+	for(int i=0;i<n;i++){
+        solution = max(l_max[i] + r_max[i] + y*a[i],solution);
+	}
+
+	cout << solution;
+	cout << endl;
+
+
+}
