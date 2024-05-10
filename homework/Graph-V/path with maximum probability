@@ -1,0 +1,62 @@
+class Solution {
+public:
+     
+     
+    double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start_node, int end_node) {
+        
+        vector<pair<int,double>> adja_list[n];
+
+        int e = edges.size();
+
+        for(int i=0;i<e;i++){
+            double cost = -log10(succProb[i]);
+
+            cout << cost << " ";
+
+            adja_list[edges[i][0]].push_back({edges[i][1],cost});
+            adja_list[edges[i][1]].push_back({edges[i][0],cost}); 
+        }
+        
+        double inf = 1e9;
+
+        vector<double> minimum_cost(n,inf);
+        vector<bool> visi(n,false);
+
+        priority_queue<pair<double,int>,vector<pair<double,int>>, greater<pair<double,int>>> pq;
+
+        pq.push({0,start_node});
+        minimum_cost[start_node] = 0;
+
+        while(!pq.empty()){
+           
+           auto cur = pq.top();
+           pq.pop();
+
+           if( cur.second == end_node)
+            return pow(10,-cur.first);
+
+           if(visi[cur.second])continue;
+
+           visi[cur.second] = true;
+
+           for(auto neighbor:adja_list[cur.second]){
+               
+
+               int n_node = neighbor.first;
+               double edge_cost = neighbor.second;
+
+               if(visi[n_node])continue;
+
+               if( minimum_cost[n_node] > cur.first + edge_cost ){
+                  minimum_cost[n_node] = cur.first + edge_cost;
+                  pq.push({edge_cost + cur.first,n_node});
+               }
+
+           } 
+
+        }
+
+        return 0;
+
+    }
+};
