@@ -1,0 +1,64 @@
+class Disjoint_Set{
+    public:
+
+    vector<int> parent;
+    vector<int> size;
+
+    Disjoint_Set(int n){
+        parent.resize(n+1,0);
+        size.resize(n+1,1);
+
+        for(int i=0;i<n+1;i++)
+         parent[i] = i;
+    }
+    
+    int find_u_parent(int u){
+        if(parent[u] == u)
+         return u;
+        else 
+         return parent[u] = find_u_parent(parent[u]);  
+    }
+
+    void Union_node(int u,int v){
+        int u_up = find_u_parent(u);
+        int v_up = find_u_parent(v);
+
+        if(v_up == u_up)
+         return;
+
+        if(size[u_up] >= size[v_up]){
+            parent[v_up] = u_up;
+            size[u_up] += v_up;
+        } 
+        else{
+            parent[u_up] = v_up;
+            size[v_up] += u_up;
+        }
+
+    }
+
+};
+
+class Solution {
+public:
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+        
+        int n = edges.size();
+
+        Disjoint_Set d_set(n);
+
+        for(auto p:edges){
+            int u = p[0];
+            int v = p[1];
+
+            if(d_set.find_u_parent(v) == d_set.find_u_parent(u))
+             return {u,v};
+            else 
+             d_set.Union_node(u,v); 
+        }
+        
+
+        return {0,0};
+
+    }
+};
