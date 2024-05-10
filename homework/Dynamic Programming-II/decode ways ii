@@ -1,0 +1,58 @@
+class Solution {
+public:
+    
+    using ll = long long;
+    
+    int numDecodings(string s) {
+        int n = s.size();
+    
+        ll ca[n+1];
+        
+        memset(ca,0,sizeof ca);
+
+        ll mod =1e9+7;
+
+        ca[n] = 1;
+
+        for(int i=n-1;i>=0;i--){
+            if(s[i] == '*')
+             ca[i] = (ca[i]+ ((ca[i+1])%mod)*9) % mod;
+            else if(s[i] - '0' > 0)
+             ca[i] =  (ca[i] + ca[i+1]) %mod;
+
+            if(i == n-1 )
+             continue;
+
+            if(s[i] == '*' && s[i+1] == '*')
+             ca[i] = (ca[i] + 15*(ca[i+2])%mod) %mod;
+            else if(s[i] == '*'){
+                for(int l=1;l<=9;l++){
+                    int t = l*10 + (s[i+1]-'0');
+                    
+                    if(t > 0 && t <= 26)
+                     ca[i] = (ca[i] + ca[i+2])%mod;
+                }
+            }
+            else if(s[i+1] == '*'){
+                for(int l=1;l<=9;l++){
+                    int t = (s[i]-'0')*10 + l;
+
+                    if(t >0 && t <= 26 && s[i] != '0')
+                     ca[i] = (ca[i] + ca[i+2])%mod;
+                }
+            }
+            else{
+                int t = (s[i]-'0')*10 + (s[i+1] - '0');
+
+                if(t > 0 && t <= 26 && s[i] != '0')
+                 ca[i] = (ca[i] + ca[i+2]) %mod;
+            }
+
+        }
+
+        cout << ca[n-1] << " ";
+
+        return (int)((ca[0]) %mod);
+
+    }
+};
