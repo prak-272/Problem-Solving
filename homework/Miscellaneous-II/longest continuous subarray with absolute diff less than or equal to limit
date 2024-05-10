@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int longestSubarray(vector<int>& nums, int limit) {
+        
+        int n = nums.size();
+
+        int i = 0;
+        int j = 0;
+
+        int maxi_length = 0;
+
+        list<int> maxi;
+        list<int> mini;
+        
+        while(j < n){
+            
+            while(!mini.empty() && mini.back() > nums[j])mini.pop_back();
+            mini.push_back(nums[j]);
+            while(!maxi.empty() && maxi.back() < nums[j])maxi.pop_back();
+            maxi.push_back(nums[j]);
+
+
+            while( (i <= j) && ((maxi.front()-mini.front()) > limit)){
+               
+               if(!mini.empty() && nums[i] == mini.front())mini.pop_front();
+               if(!maxi.empty() && nums[i] == maxi.front())maxi.pop_front();
+
+               i++;
+            }   
+
+            maxi_length = max(j-i+1,maxi_length);
+
+            j++;
+
+        }
+
+        return maxi_length;
+
+
+
+    }
+};
