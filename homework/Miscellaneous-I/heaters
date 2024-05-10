@@ -1,0 +1,44 @@
+class Solution {
+public:
+    
+    bool checker(int m,vector<int>& houses,vector<int>& heaters){
+        
+        int n1 = houses.size();
+        int n2 = heaters.size(); 
+
+        int i = 0;
+        int j= 0;
+
+        while(i < n1 && j < n2 ){
+
+            if(houses[i] >= (heaters[j] - m) && houses[i] <= (heaters[j]+m))i++;
+            else if(houses[i] < heaters[j] - m)return false;
+            else if(houses[i] > heaters[j]+ m)j++;     
+        }
+
+
+        cout << i <<" ";
+
+        return (i == n1);
+
+    }
+    
+    int findRadius(vector<int>& houses, vector<int>& heaters) {
+        
+        int l = -1;
+        int r = 2*1e9;
+
+        sort(houses.begin(),houses.end());
+        sort(heaters.begin(),heaters.end());
+
+        while(r-l>1){
+            int m = l+(r-l)/2;
+
+            if(checker(m,houses,heaters))r=m;
+            else l = m;
+        }
+
+        return r;
+
+    }
+};
