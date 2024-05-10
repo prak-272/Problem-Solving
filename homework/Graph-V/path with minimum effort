@@ -1,0 +1,60 @@
+class Solution {
+public:
+    int minimumEffortPath(vector<vector<int>>& heights) {
+        
+     // We have to find path with minimum cost and trhe cost is non-decreasing so we can apply    
+     // Dijkstra
+        
+        int n = heights.size();
+        int m = heights[0].size();
+
+        int inf = 1e9;
+
+        vector<vector<int>> minimum_effort(n,vector<int> (m,inf));
+        vector<vector<bool>> visi(n,vector<bool> (m,false));
+
+        priority_queue< pair<int,vector<int>> , vector<pair<int,vector<int>>> , greater<pair<int,vector<int>>>> pq;
+
+        pq.push({0,{0,0}});
+        minimum_effort[0][0] = 0;
+
+        vector<vector<int>> directions = {{0,1},{0,-1},{1,0},{-1,0}};
+
+        while(!pq.empty()){
+            
+            auto curr = pq.top();
+            pq.pop();
+
+            if( curr.second[0] == n-1 && curr.second[1] == m-1 )
+             return curr.first;
+
+            if( visi[curr.second[0]][curr.second[1]] )continue;
+
+            visi[curr.second[0]][curr.second[1]] = true;
+            minimum_effort[curr.second[0]][curr.second[1]] = curr.first;
+
+            for(auto dir:directions){
+                int new_i = curr.second[0] + dir[0];
+                int new_j = curr.second[1] + dir[1];
+                
+                if(new_i < 0 || new_i >= n || new_j >= m || new_j < 0 )
+                 continue;
+
+                if(visi[new_i][new_j])
+                 continue;
+
+            int edge_effort = abs(heights[new_i][new_j] - heights[curr.second[0]][curr.second[1]]);
+            int path_effort  = max(edge_effort,curr.first); 
+
+             
+                pq.push({path_effort,{new_i,new_j}});
+               
+
+            }
+
+        }
+       
+        return inf;
+       
+    }
+};
