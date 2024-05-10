@@ -1,0 +1,59 @@
+class Solution {
+public:
+    
+    bool bfs(int i,vector<bool>& visi,vector<int>& colour,vector<vector<int>>& graph){
+        
+        queue<int> q;
+
+        q.push(i);
+
+        colour[i] = 1;
+        visi[i] = true;
+
+        while(!q.empty()){
+            int cur = q.front();
+            q.pop();
+
+            cout << cur << " ";
+
+            for(auto neighbour:graph[cur]){
+                if(colour[neighbour] != -1){
+                    if(colour[cur] == colour[neighbour]){
+                     return false;
+                    }
+                }
+                else{
+                    visi[neighbour] = true;
+
+
+                    colour[neighbour] = 1- colour[cur];
+                    q.push(neighbour);
+                }
+            }
+            
+        }
+
+        return true;
+
+    }
+    
+    bool isBipartite(vector<vector<int>>& graph) {
+        
+        int n = graph.size();
+
+        vector<bool> visi(n,false);
+        vector<int> colour(n,-1);
+
+        for(int i=0;i<n;i++){
+            if(!visi[i]){ 
+             if(!bfs(i,visi,colour,graph))
+              return false;
+            } 
+        }
+
+        return true;
+
+
+
+    }
+};
