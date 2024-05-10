@@ -1,0 +1,104 @@
+//{ Driver Code Starts
+#include<bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+class Solution
+{
+	public:
+	//Function to find number of strongly connected components in the graph.
+    
+    void dfs(int i,vector<bool>& visi,vector<vector<int>>& adj,stack<int>& dfs_order){
+        
+        visi[i] = true;
+        
+        for(auto neighbour:adj[i]){
+            if(!visi[neighbour])
+               dfs(neighbour,visi,adj,dfs_order);
+        }
+        
+        dfs_order.push(i);
+        
+    }
+    
+   void dfs_reverse(int i,vector<bool>& visi,vector<vector<int>>& adja_list){
+        
+        visi[i] = true;
+        
+        for(auto neighbour:adja_list[i]){
+            if(!visi[neighbour])
+              dfs_reverse(neighbour,visi,adja_list);
+        }
+    }
+    
+    
+    
+    int kosaraju(int v, vector<vector<int>>& adj)
+    {
+        //code here
+        
+        stack<int> dfs_order;
+        vector<bool> visi(v,false);
+        
+        for(int i=0;i<v;i++){
+            if(!visi[i])
+              dfs(i,visi,adj,dfs_order);
+        }
+        
+        vector<vector<int>> adja_list(v);
+        
+        for(int i=0;i<v;i++){
+           for(auto j:adj[i]){
+               adja_list[j].push_back(i);
+           }
+        }
+        
+        for(int i=0;i<v;i++)visi[i] = false;
+        int no_of_scc = 0;
+        
+        for(int i=0;i<v;i++){
+            int vert = dfs_order.top();
+            dfs_order.pop();
+            if(!visi[vert]){
+              dfs_reverse(vert,visi,adja_list);
+              no_of_scc++;
+            }  
+        }
+        
+        return no_of_scc;
+        
+    }
+};
+
+
+//{ Driver Code Starts.
+
+
+int main()
+{
+    
+    int t;
+    cin >> t;
+    while(t--)
+    {
+    	int V, E;
+    	cin >> V >> E;
+
+    	vector<vector<int>> adj(V);
+
+    	for(int i = 0; i < E; i++)
+    	{
+    		int u, v;
+    		cin >> u >> v;
+    		adj[u].push_back(v);
+    	}
+
+    	Solution obj;
+    	cout << obj.kosaraju(V, adj) << "\n";
+    }
+
+    return 0;
+}
+
+
+// } Driver Code Ends
