@@ -1,0 +1,62 @@
+class Solution {
+public:
+    int largestPathValue(string colors, vector<vector<int>>& edges) {
+        
+        vector<int> flow_states;
+
+        int n = colors.size();
+
+        vector<int> adja_list[n];
+        vector<int> indegree(n,0);
+
+        for(auto p:edges){
+            adja_list[p[0]].push_back(p[1]);
+            indegree[p[1]]++;
+        }
+
+        queue<int> q;
+
+        for(int i=0;i<n;i++){
+            if(indegree[i] == 0)
+             q.push(i);
+        }
+
+        while(!q.empty()){
+            int cur = q.front();
+            q.pop();
+
+            flow_states.push_back(cur);
+
+            for(auto neighbour:adja_list[cur]){
+                indegree[neighbour]--;
+
+                if(indegree[neighbour] == 0)
+                 q.push(neighbour);
+            }
+        }
+
+        if(flow_states.size() < n) return -1;
+
+        reverse(flow_states.begin(),flow_states.end());
+
+        vector<vector<int>> maxi(n,vector<int> (26,0));  
+
+        int solution = 0;
+ 
+        for(auto i:flow_states){
+            for(int j=0;j<26;j++){
+                for(auto neighbour:adja_list[i]){
+                    maxi[i][j] = max(maxi[i][j],maxi[neighbour][j]);
+                }
+            }
+            maxi[i][colors[i]-'a']++;
+            solution = max(solution,maxi[i][colors[i]-'a']);
+        }
+
+        return solution;
+         
+
+
+
+    }
+};
