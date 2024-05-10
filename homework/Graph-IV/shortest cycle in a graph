@@ -1,0 +1,57 @@
+class Solution {
+public:
+    
+     void bfs(int i,vector<int>& parent,vector<int>& level,vector<int> adja_list[],vector<bool>& visi,int& mini){
+         queue<int> q;
+         q.push(i);
+
+         visi[i] = true;
+
+         while(!q.empty()){
+             int cur_node = q.front();
+              q.pop();
+
+              for(auto neighbour:adja_list[cur_node]) {
+                 if(visi[neighbour] == true){
+                     if(parent[cur_node] == neighbour)
+                      continue;
+
+                      cout << level[neighbour] + level[cur_node]; 
+
+                      mini = min(level[neighbour] + level[cur_node] + 1,mini); 
+                  }
+                 else{
+                     level[neighbour] = level[cur_node] + 1;
+                     parent[neighbour] = cur_node;
+
+                     visi[neighbour] = true;
+                     q.push(neighbour);
+                     
+                 }
+              }
+         } 
+
+     }
+    
+    int findShortestCycle(int n, vector<vector<int>>& edges) {
+        
+         vector<int> adja_list[n];
+
+         for(auto p:edges){
+            adja_list[p[0]].push_back(p[1]);
+            adja_list[p[1]].push_back(p[0]);
+         }
+
+         int mini = n+1;
+
+         for(int i=0;i<n;i++){
+             vector<bool> visi(n,false);
+             vector<int> parent(n,n+1);
+             vector<int> level(n,0);
+             bfs(i,parent,level,adja_list,visi,mini);
+         }
+
+         return ((mini == n+1)?-1:mini);
+
+    }
+};
