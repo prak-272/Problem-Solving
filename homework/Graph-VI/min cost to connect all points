@@ -1,0 +1,50 @@
+class Solution {
+public:
+    int minCostConnectPoints(vector<vector<int>>& points) {
+        
+        int n = points.size();
+
+        map<vector<int>,int> visi;
+
+        int mini_cost = 0;
+
+        priority_queue< pair<int,vector<int>> , vector<pair<int,vector<int>>> ,greater<pair<int,vector<int>>>> pq;
+
+        pq.push({0,{points[0][0],points[0][1]}});
+
+        while(!pq.empty()){
+            auto cur = pq.top();
+            pq.pop();
+            
+            int cur_e = cur.first;
+
+            int cur_node_x = cur.second[0];
+            int cur_node_y = cur.second[1];
+
+            if(visi.contains({cur_node_x,cur_node_y}))
+             continue;
+
+            mini_cost += cur_e;
+
+            visi[{cur_node_x,cur_node_y}] = 1;
+
+            for(int i=0;i<n;i++){
+                int n_x_node = points[i][0];
+                int n_y_node = points[i][1];
+                
+                if(!visi.contains({n_x_node,n_y_node})){
+                    int dist = abs(cur_node_x-n_x_node) + abs(cur_node_y - n_y_node);
+                    pq.push({dist,{n_x_node,n_y_node}});
+                }
+
+            }
+
+
+ 
+        }
+
+
+        return mini_cost;
+
+    }
+};
