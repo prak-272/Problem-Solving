@@ -1,0 +1,53 @@
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        
+        vector<pair<int,int>> adja_list[n];
+
+        for(auto p:flights){
+            adja_list[p[0]].push_back({p[1],p[2]});
+        }
+
+        vector<int> distance(n,INT_MAX);
+        vector<int> stops(n,INT_MAX);
+
+        priority_queue<vector<int>,vector<vector<int>>, greater<vector<int>>> pq;
+        pq.push({0,src,0});
+
+        while(!pq.empty()){
+            auto curr = pq.top();
+            
+            int curr_distance = curr[0];
+            int curr_node = curr[1];
+            int curr_stops = curr[2];
+
+            pq.pop();
+
+            if(curr_node == dst)
+              return curr_distance;
+
+            if(curr_stops == k+1)
+             continue;
+
+            for(auto neighbour: adja_list[curr_node]){
+                    
+                int neighbour_node = neighbour.first;
+                int edge_weight = neighbour.second;
+
+                if(distance[neighbour_node] > curr_distance + edge_weight){
+                    distance[neighbour_node] = curr_distance + edge_weight;
+                    stops[neighbour_node] = curr_stops+1;
+                    pq.push({curr_distance+edge_weight,neighbour_node,curr_stops+1});
+                }
+                else if(stops[neighbour_node] > curr_stops+1){
+                    pq.push({curr_distance+edge_weight,neighbour_node,curr_stops+1});
+                }
+                 
+            }    
+        }
+
+        return -1;  
+         
+
+    }
+};
