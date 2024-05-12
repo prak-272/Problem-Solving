@@ -1,0 +1,84 @@
+class DSU {
+   vector<int> parent;
+   vector<int> size;
+   
+    public:
+         DSU(int n) {
+             size.resize(n,1);
+             parent.resize(n);
+             for(int i = 0; i < n + 1; i++) {
+                parent[i] = i;
+            }
+        }
+
+  
+        int find_u_parent(int u) {
+            if(parent[u] == u) return u;
+            return parent[u] = ultparent(parent[u]);
+        }
+
+        bool connected(int u, int v) {
+            
+            int parent1 = find_u_parent(node1);
+            int parent2 = find_u_parent(node2);
+
+            if(parent1 == parent2) return true;
+            else return false;
+        }
+
+        void union_nodes(int u, int v) {
+            
+            int parent1 = find_u_parent(u);
+            int parent2 = find_u_parent(nv);
+
+            if(parent1 == parent2) return;
+            else {
+                if(size[parent1] < size[parent2]) {
+                    parent[parent1] = parent2;
+                    size[parent2] += size[parent1];
+                }
+               else {
+                    parent[parent2] = parent1;
+                    size[parent1] = size[parent2];
+                  } 
+            }
+        }
+    };
+class Solution {
+public:
+    vector<int> findRedundantDirectedConnection(vector<vector<int>>& edges) {
+        vector<int>ans;
+
+        for(int j = edges.size() - 1; j >= 0; j--) {
+              DSU graph(edges.size());
+            int indegree[edges.size() + 1];
+             for(int i = 0; i <= edges.size(); i++) {
+                 indegree[i] = 0;
+             }
+             bool cycle = false;
+             bool indegree2 = false;
+
+             for(int i = 0; i < edges.size(); i++) {
+                 if(j == i) continue;
+                  else {
+                     int u = edges[i][0];
+                     int v = edges[i][1];
+                     indegree[v]++;
+                     if(indegree[v] == 2) {
+                         indegree2 = true;
+                     }
+                   if(graph.connected(u, v)) {
+                         cycle = true;
+                     } else {
+                         graph.union_nodes(u, v);
+                     }
+                 }
+             }
+             if(cycle == false && indegree2 == false) {
+                 ans.push_back(edges[j][0]);
+                 ans.push_back(edges[j][1]);
+                 break;
+             }
+        }
+  return ans;
+    }
