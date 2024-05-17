@@ -1,0 +1,34 @@
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+        
+        int n = nums.size();
+
+        int solution = nums[0];
+
+        vector<int> dp_1(n,INT_MIN);
+        vector<int> dp_2(n,INT_MAX);
+
+        dp_1[0] = nums[0];
+        dp_2[0] = nums[0];
+
+        for(int i=1;i<n;i++){
+           
+           if(nums[i] < 0){
+            dp_1[i] = max(dp_2[i-1]*nums[i],nums[i]);
+            dp_2[i] = min(dp_1[i-1]*nums[i],nums[i]);
+           }  
+           else{
+            dp_1[i] = max(dp_1[i-1]*nums[i],nums[i]);
+            dp_2[i] = min(dp_2[i-1]*nums[i],nums[i]);
+           }
+             
+
+           solution = max(solution,dp_1[i]); 
+
+        }
+
+        return solution;
+
+    }
+};
