@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        
+        vector<int> ca(amount+1,1e8);
+
+        ca[0] = 0;
+
+        for(int i=1;i<amount+1;i++){
+            for(auto c:coins){
+                if(i- c >= 0)
+                 ca[i] = min(ca[i-c],ca[i]);
+            }
+            ca[i] = ca[i] + 1;
+        }
+
+        return ((ca[amount]) >= 1e8?-1:ca[amount]);
+
+
+    }
+};
