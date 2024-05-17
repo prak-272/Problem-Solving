@@ -1,0 +1,29 @@
+class Solution {
+public:
+    
+
+    int lengthOfLIS(vector<int>& nums) {
+        
+        int n = nums.size();
+
+        int  inf = 100000;
+
+        vector<int> ca(n,inf);
+
+        int maxi_length_of_lis = 0;
+
+        for(int i=0;i<n;i++){
+           int l = lower_bound(ca.begin(),ca.end(),nums[i]) - ca.begin();
+           ca[l] = nums[i];
+
+           maxi_length_of_lis = max(maxi_length_of_lis,l+1);
+        }
+
+        return maxi_length_of_lis;
+
+
+
+        // return length_of_lis(0,-1,n,ca,nums);
+
+    }
+};
