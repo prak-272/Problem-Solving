@@ -1,0 +1,69 @@
+#include<bits/stdc++.h>
+using namespace std;
+ 
+#define ll long long
+#define endl '\n'
+ 
+const int MOD = 1e9 + 7;
+const ll INF = 1e8;
+ 
+ll power(ll a,ll b){
+    if(b<0){a= 1/a; b= -b;}
+ 
+    if(b==0)return 1;
+    ll half_power = power(a,b/2);
+ 
+    if(b%2 ==0)return half_power*half_power;
+    else return half_power*half_power*a;
+ 
+}
+ 
+int g[1000005];
+int dp[1000005];
+ 
+int n,s;
+ 
+int mcoins(int k){
+	if( k == 0) return 0;
+	if(k < 0 ) return INF;
+ 
+	if( dp[k] != -1 ) return dp[k];
+ 
+	int coins = INF;
+	for(int i=0;i<n;i++){
+		coins = min(mcoins(k-g[i]) , coins);
+	}
+ 
+	return dp[k] = 1 + coins;
+ 
+}
+ 
+void solve()
+{
+	cin >> n >> s;
+ 
+	for(int i=0;i<n;i++) cin >> g[i];
+	for(int i=0;i<=s;i++) dp[i] = -1;
+ 
+	int ans = mcoins(s);
+ 
+    cout << ((ans < INF)?ans:-1) << " ";
+  
+}
+ 
+signed main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+ 
+ 
+    ll tc;
+    tc = 1;
+ 
+    while(tc--){
+        solve();
+ 
+    }
+ 
+ 
+}
