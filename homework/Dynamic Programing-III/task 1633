@@ -1,0 +1,48 @@
+#include<bits/stdc++.h>
+using namespace std;
+ 
+#define ll long long
+#define endl '\n'
+
+const ll MOD = 1e9 + 7;
+const ll INF = LLONG_MAX >> 1;
+ 
+void solve()
+{
+   int n;cin >> n;
+    
+   int ca[1000007]{};
+ 
+    ca[0] = 1;
+ 
+   for(int i=1;i<=n;i++){
+       for(int j=1;j<=6;j++){
+           if(i-j >= 0){
+               ca[i] = (ca[i] + ca[i-j]) % MOD;
+           }
+       }
+   }
+ 
+   cout << ca[n];
+    
+    
+ 
+}
+ 
+signed main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    ll tc;
+    tc =1;
+ 
+    while(tc--){
+    
+        solve();
+ 
+    }
+ 
+ 
+}
+ 
