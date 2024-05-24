@@ -1,0 +1,30 @@
+class Solution {
+public:
+
+    int minDistance(string word1, string word2) {
+
+
+        int n = word1.size();
+        int m = word2.size();
+
+        vector<int> current_row(m+1,0);
+        vector<int> next_row(m+1,0);
+
+        for(int i=0;i<(m+1);i++)
+         next_row[i] = m-i;
+
+        for(int i=n-1;i>=0;i--){
+            current_row[m] = n-i;
+            for(int j=m-1;j>=0;j--){
+                if(word1[i] == word2[j])
+                 current_row[j] = next_row[j+1];
+                else 
+                 current_row[j] = 1+min({next_row[j],current_row[j+1],next_row[j+1]}); 
+            }
+            next_row = current_row;
+        } 
+
+        return next_row[0];
+
+    }
+};
