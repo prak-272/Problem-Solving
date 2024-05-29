@@ -1,0 +1,68 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+#define ll long long
+#define endl '\n'
+
+const ll INF = LLONG_MAX/2;
+const int MOD = 1e9 + 7;
+
+void solve()
+{
+	int n;cin >> n;
+
+	int a[n];
+	for(int i=0;i<n;i++)cin >> a[i];
+
+	int dp[n][n+1];
+	memset(dp,0,sizeof dp);
+
+	for(int i=n-1;i>=0;i--){
+		for(int k=1;k<n-i+1;k++){
+			int j = k+i-1;
+            
+			int front = 0;
+			
+			if(i+1 < n)
+			 front = dp[i+1][k-1];
+
+			int back = dp[i][k-1];
+
+			dp[i][k] = max(front+(a[i]*(n-k+1)),back+(a[j]*(n-k+1)));
+
+		}
+	}
+
+	int i= 0;
+	int k = n;
+
+	while(k > 0 ){
+		int j = k+i-1;
+
+		if(dp[i][k] == dp[i+1][k-1] + (a[i]*(n-k+1))){
+			cout << "beg" << " ";
+			i++;k--;
+		}
+		else if(dp[i][k] == dp[i][k-1] + (a[j]*(n-k+1))){
+			cout << "end" << " ";
+			k--;
+		}
+	}
+
+	cout << dp[0][n];
+
+
+}
+
+signed main(){
+
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+
+	ll tc = 1;
+
+	while(tc--){
+		solve();
+	}
+
+}
